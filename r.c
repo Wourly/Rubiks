@@ -1311,14 +1311,12 @@ int sfl (void)
                 }
                 raF();
             }
-
         }
 
         //d();
     }
     else // there is no side with correct corners yet
     {
-
         while (1)
         {
             if (((ds[0] == ds[4] && ls[8] == ls[4]) && (us[8] == us[4] && rs[0] == rs[4])) || ((ls[2] == ls[4] && us[6] == us[4]) && (rs[6] == rs[4] && ds[2] == ds[4])))
@@ -1360,13 +1358,16 @@ int swc (void)
 
 
 cc();
-cr(rcs(235));
+cr(rcs(999));
 swc();
 d();
 
 /*
+rand() % 6 creates infinite loop sometimes, if substitued by number, does not make trouble
 232 rcs hidden error
 235
+..examples
+
 
 for (int test = 200; test <= 210; test++)
 {
