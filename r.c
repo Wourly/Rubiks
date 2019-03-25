@@ -548,11 +548,16 @@ int main () {
         char * s;
         int size = n * 3;
         s = (char *) malloc(size * sizeof(char));
+        if (!s)
+        {
+            printf("No memory");
+            exit(0);
+        }
         char * p = s;
 
         for (int rcsi = 0; (rcsi + 3) < size; rcsi = rcsi + 3)
         {
-            
+            printf("a");
             // face
             int f = rand() % 6;
 
@@ -564,20 +569,20 @@ int main () {
                 case 3: *p = 'L'; break;
                 case 4: *p = 'B'; break;
                 case 5: *p = 'D'; break;
-                default: *p = 'F'; break;
+                default: printf("Error!");
             }
 
             p++;
 
             // moves
-            char c = (rand() % 3) + 49;
+            char c = (rand() % 3) + '1';
             *p = c;
             p++;
             // separator
             *p = ' ';
             p++;
 
-            //printf("%d-", rcsi + 2);
+            printf("%d-", rcsi + 2);
 
         }
 
@@ -1358,7 +1363,7 @@ int swc (void)
 
 
 cc();
-cr(rcs(999));
+cr(rcs(235));
 swc();
 d();
 
