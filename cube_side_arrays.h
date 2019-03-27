@@ -22,6 +22,8 @@ struct Cube_side_arrays
     char * d; //down
 };
 
+
+//METHODS
 int fill_cube_side_array (char * string_pointer, char character)
 {
     for (int i = 0; i < 9; i++)
@@ -34,6 +36,7 @@ int fill_cube_side_array (char * string_pointer, char character)
     return 0;
 }
 
+//DESTRUCTOR
 int destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
 {
     FREE_CUBE_SIDE_ARRAY(f)
@@ -49,9 +52,9 @@ int destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
     return 0;
 }
 
+//CONTRUCTOR
 Cube_side_arrays * new_cube_side_arrays ()
 {
-
     Cube_side_arrays * cube_side_arrays = NULL;
 
     if ((cube_side_arrays = malloc(1 * sizeof * cube_side_arrays)))
