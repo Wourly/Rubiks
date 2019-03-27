@@ -11,8 +11,11 @@ int main () {
 
 Cube_side_arrays * s = new_cube_side_arrays();
 
-printf("%s", s->f);
+if (s)
+{
 
+printf("%s", s->f);
+}
 
 
 

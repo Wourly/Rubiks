@@ -26,7 +26,7 @@ struct Cube_side_arrays
 //METHODS
 int fill_cube_side_array (char * string_pointer, char character)
 {
-    for (int i = 0; i < 9; i++)
+    for (register unsigned short int i = 0; i < 9; i++)
     {
         string_pointer[i] = character;
     }
@@ -37,7 +37,7 @@ int fill_cube_side_array (char * string_pointer, char character)
 }
 
 //DESTRUCTOR
-int destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
+Cube_side_arrays * destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
 {
     FREE_CUBE_SIDE_ARRAY(f)
     FREE_CUBE_SIDE_ARRAY(b)
@@ -49,7 +49,7 @@ int destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
     free(cube_side_arrays);
     cube_side_arrays = NULL;
 
-    return 0;
+    return NULL;
 }
 
 //CONTRUCTOR
@@ -80,14 +80,13 @@ Cube_side_arrays * new_cube_side_arrays ()
             fill_cube_side_array(cube_side_arrays->r, 'b'); //blue
             fill_cube_side_array(cube_side_arrays->u, 'm'); //magenta
             fill_cube_side_array(cube_side_arrays->d, 'g'); //gree
-        }
-        else
-        {
-            destroy_cube_side_arrays(cube_side_arrays);
-        };
-    };
 
-    return cube_side_arrays;
+            return cube_side_arrays;
+        }
+    }
+
+    return destroy_cube_side_arrays(cube_side_arrays);
+
 };
 
 #endif
