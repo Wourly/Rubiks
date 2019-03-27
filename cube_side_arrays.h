@@ -6,9 +6,9 @@
 
 //arrayS, it is plural, do not forget S
 
-#define MALLOC_SIDE_ARRAY($array_name$)       (cube_side_arrays->$array_name$ = malloc(10 * sizeof * cube_side_arrays->$array_name$))
+#define MALLOC_CUBE_SIDE_ARRAY($array_name$)       (cube_side_arrays->$array_name$ = malloc(10 * sizeof * cube_side_arrays->$array_name$))
 //#define fill_cube_side_array(array_name)         fill_cube_side_array(cube_side_arrays->array_name, 'array_name'); !!! Character constant too long
-#define FREE_SIDE_ARRAY($array_name$)         free(cube_side_arrays->$array_name$); cube_side_arrays->$array_name$ = NULL;
+#define FREE_CUBE_SIDE_ARRAY($array_name$)         free(cube_side_arrays->$array_name$); cube_side_arrays->$array_name$ = NULL;
 
 typedef struct Cube_side_arrays Cube_side_arrays;
 
@@ -20,14 +20,12 @@ struct Cube_side_arrays
     char * r; //right
     char * u; //up
     char * d; //down
-    char * t; //temporary
 };
 
 int fill_cube_side_array (char * string_pointer, char character)
 {
     for (int i = 0; i < 9; i++)
     {
-        
         string_pointer[i] = character;
     }
 
@@ -38,13 +36,12 @@ int fill_cube_side_array (char * string_pointer, char character)
 
 int destroy_cube_side_arrays (Cube_side_arrays * cube_side_arrays)
 {
-    FREE_SIDE_ARRAY(f)
-    FREE_SIDE_ARRAY(b)
-    FREE_SIDE_ARRAY(l)
-    FREE_SIDE_ARRAY(r)
-    FREE_SIDE_ARRAY(u)
-    FREE_SIDE_ARRAY(d)
-    FREE_SIDE_ARRAY(t)
+    FREE_CUBE_SIDE_ARRAY(f)
+    FREE_CUBE_SIDE_ARRAY(b)
+    FREE_CUBE_SIDE_ARRAY(l)
+    FREE_CUBE_SIDE_ARRAY(r)
+    FREE_CUBE_SIDE_ARRAY(u)
+    FREE_CUBE_SIDE_ARRAY(d)
 
     free(cube_side_arrays);
     cube_side_arrays = NULL;
@@ -61,19 +58,17 @@ Cube_side_arrays * new_cube_side_arrays ()
     {
         if
         (
-            MALLOC_SIDE_ARRAY(f)
+            MALLOC_CUBE_SIDE_ARRAY(f)
             &&
-            MALLOC_SIDE_ARRAY(b)
+            MALLOC_CUBE_SIDE_ARRAY(b)
             &&
-            MALLOC_SIDE_ARRAY(l)
+            MALLOC_CUBE_SIDE_ARRAY(l)
             &&
-            MALLOC_SIDE_ARRAY(r)
+            MALLOC_CUBE_SIDE_ARRAY(r)
             &&
-            MALLOC_SIDE_ARRAY(u)
+            MALLOC_CUBE_SIDE_ARRAY(u)
             &&
-            MALLOC_SIDE_ARRAY(d)
-            &&
-            MALLOC_SIDE_ARRAY(t)
+            MALLOC_CUBE_SIDE_ARRAY(d)
         )
         {
             fill_cube_side_array(cube_side_arrays->f, 'r'); //red
@@ -82,7 +77,6 @@ Cube_side_arrays * new_cube_side_arrays ()
             fill_cube_side_array(cube_side_arrays->r, 'b'); //blue
             fill_cube_side_array(cube_side_arrays->u, 'm'); //magenta
             fill_cube_side_array(cube_side_arrays->d, 'g'); //gree
-            fill_cube_side_array(cube_side_arrays->t, '_'); //temporary side
         }
         else
         {
