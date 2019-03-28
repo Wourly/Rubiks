@@ -1,22 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "cube.h"
+#include "cube.h"
 #include "string_guard.h"
-#include "cube_side_arrays.h"
-//#include "drawing.h"
-//#include "elementary.h"
+#include "drawing.h"
 
 
 int main () {
 
 
-Cube_side_arrays * c = new_cube_side_arrays();
+String_guard * s = new_string_guard();
 
-printf("%lu", sizeof(Cube_side_arrays));
+string_guard_push(s, "penis");
 
+string_guard_push(s, "vagína");
 
+string_guard_push(s, "delfín");
 
-//string_guard_info(commands);
+printf("%s\n", s->value);
+
+string_guard_detail(s);
 
 
 
