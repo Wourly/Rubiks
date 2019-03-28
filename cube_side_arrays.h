@@ -79,7 +79,7 @@ Cube_side_arrays * new_cube_side_arrays ()
             fill_cube_side_array(cube_side_arrays->l, 'y'); //yellow
             fill_cube_side_array(cube_side_arrays->r, 'b'); //blue
             fill_cube_side_array(cube_side_arrays->u, 'm'); //magenta
-            fill_cube_side_array(cube_side_arrays->d, 'g'); //gree
+            fill_cube_side_array(cube_side_arrays->d, 'g'); //green
 
             return cube_side_arrays;
         }

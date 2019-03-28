@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include "cube.h"
-//#include "string_guard.h"
+#include "string_guard.h"
 #include "cube_side_arrays.h"
 //#include "drawing.h"
 //#include "elementary.h"
@@ -9,13 +9,24 @@
 
 int main () {
 
-Cube_side_arrays * s = new_cube_side_arrays();
 
-if (s)
-{
+String_guard * commands = new_string_guard();
 
-printf("%s", s->f);
-}
+//string_guard_info(commands);
+
+string_guard_push(commands, "kokos");
+
+//destroy_string_guard(commands);
+
+printf("%s\n", commands->value);
+
+
+
+
+//string_guard_info(commands);
+
+
+
 
 
 
@@ -33,16 +44,6 @@ printf("%s", s->f);
 
 
 /*
-Cube * cube = new_cube();
-
-String_guard * commands = new_string_guard();
-
-string_guard_info(commands);
-
-string_guard_push(commands, "kokos");
-
-string_guard_info(commands);
-
 string_guard_push(commands, "_pes");
 
 string_guard_info(commands);
