@@ -7,13 +7,12 @@
 
 #define FREE_STRING_GUARD_MEMBER(member) free(string_guard->member); string_guard->member = NULL;
 
-//typedef struct String_guard stringguard
 typedef struct String_guard String_guard;
 
 struct String_guard
 {
-    //number_of_strings
-    //separator_index_of_strings
+    //number_of_strings - to add later
+    //separator_index_of_strings - to add later
     long long unsigned int * capacity;
     long long unsigned int * index;
     char * value;
@@ -30,7 +29,7 @@ int string_guard_push (String_guard * string_guard, char input_string[])
     //memory management
     if (* string_guard->index + input_string_length > * string_guard->capacity)
     {
-        long long unsigned new_capacity = * string_guard->capacity * 1.2 + input_string_length + 10;
+        long long unsigned int new_capacity = * string_guard->capacity * 1.2 + input_string_length + 10;
 
         char * new_value = NULL;
         if ((new_value = malloc(new_capacity * sizeof * new_value)))

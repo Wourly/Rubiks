@@ -10,16 +10,9 @@
 int main () {
 
 
-String_guard * commands = new_string_guard();
+Cube_side_arrays * c = new_cube_side_arrays();
 
-//string_guard_info(commands);
-
-string_guard_push(commands, "kokos");
-
-//destroy_string_guard(commands);
-
-printf("%s\n", commands->value);
-
+printf("%lu", sizeof(Cube_side_arrays));
 
 
 

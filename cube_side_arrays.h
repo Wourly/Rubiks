@@ -26,7 +26,7 @@ struct Cube_side_arrays
 //METHODS
 int fill_cube_side_array (char * string_pointer, char character)
 {
-    for (register unsigned short int i = 0; i < 9; i++)
+    for (register unsigned int i = 0; i < 9; i++)
     {
         string_pointer[i] = character;
     }
