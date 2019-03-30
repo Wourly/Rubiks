@@ -74,12 +74,12 @@ Cube_side_arrays * new_cube_side_arrays ()
             MALLOC_CUBE_SIDE_ARRAY(d)
         )
         {
-            fill_cube_side_array(cube_side_arrays->f, 'r'); //red
-            fill_cube_side_array(cube_side_arrays->b, 'w'); //white
-            fill_cube_side_array(cube_side_arrays->l, 'y'); //yellow
-            fill_cube_side_array(cube_side_arrays->r, 'b'); //blue
-            fill_cube_side_array(cube_side_arrays->u, 'm'); //magenta
-            fill_cube_side_array(cube_side_arrays->d, 'g'); //green
+            fill_cube_side_array(cube_side_arrays->f, 'r');
+            fill_cube_side_array(cube_side_arrays->b, 'm');
+            fill_cube_side_array(cube_side_arrays->l, 'y');
+            fill_cube_side_array(cube_side_arrays->r, 'w');
+            fill_cube_side_array(cube_side_arrays->u, 'g');
+            fill_cube_side_array(cube_side_arrays->d, 'b');
 
             return cube_side_arrays;
         }

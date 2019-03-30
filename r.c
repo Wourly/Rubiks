@@ -1,24 +1,17 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include "elementary.h"
-#include "cube_side_arrays.h"
 #include "string_guard.h"
-#include "colours.h"
 #include "cube.h"
+
 
 int main () {
 
+String_guard * s = get_random_commands_sequence(10);
+
 Cube * cube = new_cube();
 
-apply_commands(cube, "F1 D1 D1 D1 D1 F3");
+execute_commands(s, cube);
 
-printf("%s", cube->c->value);
-
-
-
-
-
-
+string_guard_list_strings(cube->c);
 
 /*
 string_guard_push(commands, "_pes");

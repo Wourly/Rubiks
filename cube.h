@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "elementary.h"
+#include <time.h>
 #include "cube_side_arrays.h"
 #include "string_guard.h"
 #include "colours.h"
@@ -114,6 +114,26 @@ int toggle_drawing (Cube * cube)
     return 0;
 }
 
+int toggled_name (Cube * cube, char name, int rotations)
+{
+    if (*cube->is_drawing)
+    {
+        printf("\n              " YELLOW "%c" CYAN "%d" RESET_COLOUR "\n", name, rotations);
+    }
+
+    return 0;
+}
+
+int toggled_draw (Cube * cube)
+{
+    if (*cube->is_drawing)
+    {
+        draw_cube(cube);
+    }
+
+    return 0;
+}
+
 //---------------------------------------------------------------------------//
 //                                  movement                                 //
 //---------------------------------------------------------------------------//
@@ -138,30 +158,35 @@ int turn_own_side (char * side)
     return 0;
 }
 
-int extend_rotatory_functions (Cube * cube, char * side)
+int turn_own_side_backward (char * side)
 {
-    turn_own_side(side);
+    char t;
 
-    if (*cube->is_drawing)
-    {
-        draw_cube(cube);
-    }
+    t = side[0];
+    side[0] = side[2];
+    side[2] = side[8];
+    side[8] = side[6];
+    side[6] = t;
 
+    t = side[1];
+    side[1] = side[5];
+    side[5] = side[7];
+    side[7] = side[3];
+    side[3] = t;
+    
     return 0;
+}
 
-};
+
 
 //manipulation
 int turn_front_side (Cube * cube, int rotations)
 {
+    toggled_name(cube, 'F', rotations);
+    
     char t;
     while (rotations--)
-    {       
-        if (*cube->is_drawing)
-        {
-            printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-        }
-        
+    {  
         t = cube->s->l[2];
         cube->s->l[2] = cube->s->d[0];
         cube->s->d[0] = cube->s->r[6];
@@ -180,22 +205,21 @@ int turn_front_side (Cube * cube, int rotations)
         cube->s->r[0] = cube->s->u[6];
         cube->s->u[6] = t;
 
-        extend_rotatory_functions(cube, cube->s->f);
+        turn_own_side(cube->s->f);
     }
+
+    toggled_draw(cube);
 
     return 0;
 };
 
-int turn_back_side (Cube * cube, int rotation)
+int turn_back_side (Cube * cube, int rotations)
 {
-    char t;
-    while (rotation--)
-    {       
-        if (*cube->is_drawing)
-		{
-			printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-		}
+    toggled_name(cube, 'B', rotations);
 
+    char t;
+    while (rotations--)
+    {       
         t = cube->s->r[2];
         cube->s->r[2] = cube->s->d[8];
         cube->s->d[8] = cube->s->l[6];
@@ -214,21 +238,21 @@ int turn_back_side (Cube * cube, int rotation)
         cube->s->l[0] = cube->s->u[2];
         cube->s->u[2] = t;
 
-        extend_rotatory_functions(cube, cube->s->f);
+        turn_own_side(cube->s->f);
     }
+
+    toggled_draw(cube);
+
     return 0;
 }
 
-
-int turn_left_side (Cube * cube, int rotation)
+int turn_left_side (Cube * cube, int rotations)
 {
+    toggled_name(cube, 'L', rotations);
+
     char t;
-    while (rotation--)
+    while (rotations--)
     {   
-        if (*cube->is_drawing)
-		{
-			printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-		}
         t = cube->s->f[0];
         cube->s->f[0] = cube->s->u[0];
         cube->s->u[0] = cube->s->b[8];
@@ -247,21 +271,21 @@ int turn_left_side (Cube * cube, int rotation)
         cube->s->b[2] = cube->s->d[6];
         cube->s->d[6] = t;
 
-        extend_rotatory_functions(cube, cube->s->l);
+        turn_own_side(cube->s->l);
     }
+
+    toggled_draw(cube);
 
     return 0;
 }
 
-int turn_right_side (Cube * cube, int rotation)
+int turn_right_side (Cube * cube, int rotations)
 {
+    toggled_name(cube, 'R', rotations);
+
     char t;
-    while (rotation--)
-    {       
-        if (*cube->is_drawing)
-		{
-			printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-		}
+    while (rotations--)
+    {
         t = cube->s->f[2];
         cube->s->f[2] = cube->s->d[2];
         cube->s->d[2] = cube->s->b[6];
@@ -280,20 +304,21 @@ int turn_right_side (Cube * cube, int rotation)
         cube->s->b[0] = cube->s->u[8];
         cube->s->u[8] = t;
 
-        extend_rotatory_functions(cube, cube->s->b);
+        turn_own_side(cube->s->r);
     }
+
+    toggled_draw(cube);
+
     return 0;
 }
 
-int turn_up_side (Cube * cube, int rotation)
+int turn_up_side (Cube * cube, int rotations)
 {
+    toggled_name(cube, 'U', rotations);
+
     char t;
-    while (rotation--)
+    while (rotations--)
     {   
-        if (*cube->is_drawing)
-		{
-			printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-		}
         t = cube->s->f[0];
         cube->s->f[0] = cube->s->r[0];
         cube->s->r[0] = cube->s->b[0];
@@ -312,21 +337,21 @@ int turn_up_side (Cube * cube, int rotation)
         cube->s->b[2] = cube->s->l[2];
         cube->s->l[2] = t;
 
-        extend_rotatory_functions(cube, cube->s->u);
+        turn_own_side(cube->s->u);
     }
+
+    toggled_draw(cube);
 
     return 0;
 }
 
-int turn_down_side (Cube * cube, int rotation)
+int turn_down_side (Cube * cube, int rotations)
 {
+    toggled_name(cube, 'D', rotations);
+
     char t;
-    while (rotation--)
+    while (rotations--)
     {   
-        if (*cube->is_drawing)
-		{
-			printf("\n\t" GREEN "%s" RESET_COLOUR "\n", __func__);
-		}
         t = cube->s->f[6];
         cube->s->f[6] = cube->s->l[6];
         cube->s->l[6] = cube->s->b[6];
@@ -345,83 +370,114 @@ int turn_down_side (Cube * cube, int rotation)
         cube->s->b[8] = cube->s->r[8];
         cube->s->r[8] = t;
 
-        extend_rotatory_functions(cube, cube->s->d);
+        turn_own_side(cube->s->d);
     }
+
+    toggled_draw(cube);
 
     return 0;
 }
 
-    // turns own side another direction
-    int atos (char s[])
-    {
-        t = s[0];
-        s[0] = s[2];
-        s[2] = s[8];
-        s[8] = s[6];
-        s[6] = t;
+    
+int rotate_horizontally (Cube * cube, int rotations)
+{
+    toggled_name(cube, 'H', rotations);
 
-        t = s[1];
-        s[1] = s[5];
-        s[5] = s[7];
-        s[7] = s[3];
-        s[3] = t;
-        
+    while (rotations--)
+    {
+        char * ts = NULL;
+        ts = cube->s->f;
+        cube->s->f = cube->s->r;
+        cube->s->r = cube->s->b;
+        cube->s->b = cube->s->l;
+        cube->s->l = ts;
+
+        turn_own_side(cube->s->u);
+        turn_own_side_backward(cube->s->d);
+    }
+
+    toggled_draw(cube);
+
         return 0;
     }
 
+//V (front to bottom)
+int rotate_vertically (Cube * cube, int rotations)
+{
+    toggled_name(cube, 'V', rotations);
 
-    //rotate around Front
-    int raF (void)
+    char t;
+    toggle_drawing(cube);
+
+    while (rotations--)
     {
-        F(1);
-        B(3);
+        turn_left_side(cube, 1);
+        turn_right_side(cube, 3);
+
         //mid layer
-        t = ls[1];
-        ls[1] = ds[3];
-        ds[3] = rs[7];
-        rs[7] = us[5];
-        us[5] = t;
+        t = cube->s->f[1];
+        cube->s->f[1] = cube->s->u[1];
+        cube->s->u[1] = cube->s->b[7];
+        cube->s->b[7] = cube->s->d[1];
+        cube->s->d[1] = t;
 
-        t = ls[4];
-        ls[4] = ds[4];
-        ds[4] = rs[4];
-        rs[4] = us[4];
-        us[4] = t;
+        t = cube->s->f[4];
+        cube->s->f[4] = cube->s->u[4];
+        cube->s->u[4] = cube->s->b[4];
+        cube->s->b[4] = cube->s->d[4];
+        cube->s->d[4] = t;
 
-        t = ls[7];
-        ls[7] = ds[5];
-        ds[5] = rs[1];
-        rs[1] = us[3];
-        us[3] = t;
-        return 0;   
+        t = cube->s->f[7];
+        cube->s->f[7] = cube->s->u[7];
+        cube->s->u[7] = cube->s->b[1];
+        cube->s->b[1] = cube->s->d[7];
+        cube->s->d[7] = t;
     }
 
-    //rotate Front down
-    int rFD (void)
+    toggle_drawing(cube);
+    toggled_draw(cube);
+
+    return 0;
+}
+
+//around front
+int rotate_around (Cube * cube, int rotations)
+{
+    toggled_name(cube, 'A', rotations);
+
+    char t;
+    toggle_drawing(cube);
+
+    while (rotations--)
     {
-        L(1);
-        R(3);
+        turn_front_side(cube, 1);
+        turn_back_side(cube, 3);
+
         //mid layer
-        t = fs[1];
-        fs[1] = us[1];
-        us[1] = bs[7];
-        bs[7] = ds[1];
-        ds[1] = t;
+        t = cube->s->l[1];
+        cube->s->l[1] = cube->s->d[3];
+        cube->s->d[3] = cube->s->r[7];
+        cube->s->r[7] = cube->s->u[5];
+        cube->s->u[5] = t;
 
-        t = fs[4];
-        fs[4] = us[4];
-        us[4] = bs[4];
-        bs[4] = ds[4];
-        ds[4] = t;
+        t = cube->s->l[4];
+        cube->s->l[4] = cube->s->d[4];
+        cube->s->d[4] = cube->s->r[4];
+        cube->s->r[4] = cube->s->u[4];
+        cube->s->u[4] = t;
 
-        t = fs[7];
-        fs[7] = us[7];
-        us[7] = bs[1];
-        bs[1] = ds[7];
-        ds[7] = t;
-
-        return 0;
+        t = cube->s->l[7];
+        cube->s->l[7] = cube->s->d[5];
+        cube->s->d[5] = cube->s->r[1];
+        cube->s->r[1] = cube->s->u[3];
+        cube->s->u[3] = t;
     }
+
+    toggle_drawing(cube);
+    toggled_draw(cube);
+
+    return 0;   
+}
 
 //---------------------------------------------------------------------------//
 //                                   commands                                //
@@ -451,14 +507,20 @@ int get_commands_from_string(String_guard * string_guard, char * string)
         switch (c)
         {
             case 'q': goto END_OF_INPUT;
+
             case 'F': buff[0] = c; is_movement = 1; break;
             case 'B': buff[0] = c; is_movement = 1; break;
             case 'L': buff[0] = c; is_movement = 1; break;
             case 'R': buff[0] = c; is_movement = 1; break;
             case 'U': buff[0] = c; is_movement = 1; break;
             case 'D': buff[0] = c; is_movement = 1; break;
+
+            case 'H': buff[0] = c; is_movement = 1; break;
+            case 'V': buff[0] = c; is_movement = 1; break;
+            case 'A': buff[0] = c; is_movement = 1; break;
         }
 
+        //looking for number
         if (is_movement)
         {
             c = string ? string[i++] : getc(stdin);
@@ -471,7 +533,7 @@ int get_commands_from_string(String_guard * string_guard, char * string)
             }
             else
             {
-                buff[1] = '1';
+                buff[1] = c == '\'' ? 3 : 1;
                 buff[2] = '\0';
                 string_guard_push(string_guard, buff);
 
@@ -491,8 +553,6 @@ int execute_commands(String_guard * string_guard, Cube * cube)
 
     if ((buffer = malloc (3 * sizeof * buffer)))
     {
-        printf("%u<--\n", *string_guard->number_of_strings);
-
         for (register unsigned int i = 0; i < * string_guard->number_of_strings; i++)
         {
             buffer = string_guard_get_string(string_guard, i);
@@ -505,6 +565,10 @@ int execute_commands(String_guard * string_guard, Cube * cube)
                 case 'R': turn_right_side(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
                 case 'U': turn_up_side(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
                 case 'D': turn_down_side(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
+
+                case 'H': rotate_horizontally(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
+                case 'V': rotate_vertically(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
+                case 'A': rotate_around(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
             }
         }
     }
@@ -523,9 +587,45 @@ int apply_commands (Cube * cube, char * string)
     return 0;
 }
 
+String_guard * get_random_commands_sequence (int operations)
+{
+    char buff[3];
+
+    String_guard * string_guard = new_string_guard();
+
+    time_t seed;
+    time(&seed);
+    srand(seed);
+
+    while (operations--)
+    {
+        switch (rand() % 6)
+        {
+            case 0: buff[0] = 'F'; break;
+            case 1: buff[0] = 'B'; break;
+            case 2: buff[0] = 'L'; break;
+            case 3: buff[0] = 'R'; break;
+            case 4: buff[0] = 'U'; break;
+            case 5: buff[0] = 'D'; break;
+        }
+
+        buff[1] = (rand() % 3) + '1';
+        buff[2] = '\0';
+
+        string_guard_push(string_guard, buff);
+    }
+
+    return string_guard;
+}
+
 //===========================================================================//
-//                                 METHODS END                               //
+//                                 ALGORITHMS                                //
 //===========================================================================//
+
+
+
+
+
 
 //DESTRUCTOR
 Cube * destroy_cube(Cube * cube)
