@@ -8,15 +8,11 @@
 
 int main () {
 
-String_guard * commands = new_string_guard();
+Cube * cube = new_cube();
 
-string_guard_list_strings(commands);
+apply_commands(cube, "F1 D1 D1 D1 D1 F3");
 
-Cube * c = new_cube();
-
-turn_front_side(c, 1);
-
-draw_cube(c);
+printf("%s", cube->c->value);
 
 
 

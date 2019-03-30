@@ -61,7 +61,7 @@ int string_guard_allocate_separators(String_guard * string_guard)
 }
 
 //METHODS
-int string_guard_push (String_guard * string_guard, char input_string[])
+int string_guard_push (String_guard * string_guard, char * input_string)
 {
 
     //input string measurement
