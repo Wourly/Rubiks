@@ -5,171 +5,35 @@
 
 int main () {
 
-String_guard * s = get_random_commands_sequence(10);
-
 Cube * cube = new_cube();
 
-execute_commands(s, cube);
+String_guard * commands = get_random_commands_sequence(30);
+toggle_drawing(cube);
+execute_commands(commands, cube);
 
-string_guard_list_strings(cube->c);
+draw_cube(cube);
 
 /*
-string_guard_push(commands, "_pes");
+draw_cube(cube);
+apply_commands(cube, "U L U");*/
+solve_front_cross(cube);
 
-string_guard_info(commands);
+solve_front_side(cube);
 
-string_guard_push(commands, "9kladivo");
+solve_second_layer(cube);
 
-string_guard_info(commands);
+solve_back_cross(cube);
 
-printf("%s", commands->value);
+solve_last_side(cube);
 
-    //random command sequence - format for command reader
-    char * rcs (int n)
-    {
-        char * s;
-        int size = n * 3;
-        s = (char *) malloc(size * sizeof(char));
-        if (!s)
-        {
-            printf("No memory");
-            exit(0);
-        }
-        char * p = s;
+toggle_drawing(cube);
 
-        for (int rcsi = 0; (rcsi + 3) < size; rcsi = rcsi + 3)
-        {
-            printf("a");
-            // face
-            int f = rand() % 6;
-
-            switch (f)
-            {
-                case 0: *p = 'F'; break;
-                case 1: *p = 'U'; break;
-                case 2: *p = 'R'; break;
-                case 3: *p = 'L'; break;
-                case 4: *p = 'B'; break;
-                case 5: *p = 'D'; break;
-                default: printf("Error!");
-            }
-
-            p++;
-
-            // moves
-            char c = (rand() % 3) + '1';
-            *p = c;
-            p++;
-            // separator
-            *p = ' ';
-            p++;
-
-            printf("%d-", rcsi + 2);
-
-        }
-
-        return s;
-    }
+solve_final_layer(cube);
+//string_guard_detail(cube->c);
 
 
 
-    // random command sequence - format for command reader
-    char * rcs (int n)
-    {
-        char * s;
-        int size = n * 3;
-        s = (char *) malloc(size * sizeof(char));
-
-        //printf("%d", size / 3);
-        for (int rcsi = 0; (rcsi + 3) < size; rcsi = rcsi + 3, p++)
-        {
-            
-            //face
-            int f = rand() % 6;
-
-            switch (f)
-            {
-                case 0: s[rcsi] = 'F'; break;
-                case 1: s[rcsi] = 'U'; break;
-                case 2: s[rcsi] = 'R'; break;
-                case 3: s[rcsi] = 'L'; break;
-                case 4: s[rcsi] = 'B'; break;
-                case 5: s[rcsi] = 'D'; break;
-            }
-
-            //moves
-            char c = (rand() % 3) + 49;
-            s[rcsi + 1] = c;
-            //separator
-            s[rcsi + 2] = ' ';
-
-            //printf("%d-", rcsi + 2);
-
-        }
-
-        return s;
-    }
-*/
-/* c.s.ued commanc.s.d array, c.s.ued commanc.s.d position */
 /*
-char * uca = (char *) malloc (1000*sizeof(char));
-char * ucp = uca;
-char *ucae = (char *)(&uca + 1) - 1;
-
-for (int ucai = 0; ucai < 999; ucai++)
-{
-    uca[ucai] = ' ';
-}
-* ucae = '\0';
-
-// apply command
-int ac (char s[])
-{
-    cr(s);
-
-    for (int aci = 0; s[aci]; aci++, ucp++)
-    {
-        * ucp = s[aci];
-    }
-
-    ucp++;
-    * ucp = ' ';
-
-    return 0;
-}
-
-// save command message
-int scm (char s[])
-{
-    for (int aci = 0; s[aci]; aci++, ucp++)
-    {
-       * ucp = s[aci];
-    }
-
-    ucp++;
-    * ucp = ' ';
-
-    return 0;
-}
-
-// check side (piece)
-int chs (char s1[], char s2[], char c1, char c2)
-{
-    return (s1[4] == c1 && s2[4] == c2) || (s1[4] == c2 && s2[4] == c1);
-}
-
-// is side piece on top - side piece with side 1 color, but without side 2 color
-int ispot (char s1[], char s2[], char c1, char c2)
-{
-    return (s1[4] == c1 || s1[4] == c2) && (c1 != s2[4] && c2 != s2[4]);
-}
-
-//check corner (piece)
-int chc (char s1[], char s2[], char s3[], char c1, char c2, char c3)
-{
-    return (s1[4] == c1 || s1[4] == c2 || s1[4] == c3) && (s2[4] == c1 || s2[4] == c2 || s2[4] == c3) && (s3[4] == c1 || s3[4] == c2 || s3[4] == c3);
-}
-
 // solve front cross
 int sfc (void)
 {

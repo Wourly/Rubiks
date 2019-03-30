@@ -148,7 +148,7 @@ int string_guard_info (String_guard * string_guard)
     return 1;
 }
 
-char * string_guard_get_string(String_guard * string_guard, int index)
+char * string_guard_get_string (String_guard * string_guard, int index)
 {
 
     unsigned int minimum_index = 0;
@@ -207,11 +207,11 @@ int string_guard_detail (String_guard * string_guard)
 
 
 
-    printf(CYAN "list of separators:\n");
+    printf(CYAN "\nlist of separators:\t" RESET_COLOUR "(" BLUE "string number" RESET_COLOUR ", " YELLOW "index of character" RESET_COLOUR ", value)\n\n");
 
     for (unsigned int i = 0; i < * string_guard->number_of_strings; i++)
     {
-        printf(BLUE "%u:" YELLOW " %u\t", i, string_guard->separators[i]);
+        printf(BLUE "%u:" YELLOW " %u " WHITE "%s\t", i, string_guard->separators[i], string_guard_get_string(string_guard, i));
         
         if (i != 0 && i % 5 == 0)
         {
