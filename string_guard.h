@@ -63,7 +63,6 @@ int string_guard_allocate_separators(String_guard * string_guard)
 //METHODS
 int string_guard_push (String_guard * string_guard, char * input_string)
 {
-
     //input string measurement
     unsigned int input_string_length = 0;
     while (input_string[input_string_length++]);
@@ -177,7 +176,6 @@ char * string_guard_get_string (String_guard * string_guard, int index)
         (new_string = malloc(string_length * sizeof * new_string))
     )
     {
-        
         for (register unsigned int i = 0; i < string_length; i++)
         {            
             new_string[i] = string_guard->value[minimum_index + i];
@@ -207,7 +205,7 @@ int string_guard_detail (String_guard * string_guard)
 
 
 
-    printf(CYAN "\nlist of separators:\t" RESET_COLOUR "(" BLUE "string number" RESET_COLOUR ", " YELLOW "index of character" RESET_COLOUR ", value)\n\n");
+    printf(CYAN "\nlist of separators:\t" RESET_COLOUR "(" BLUE "string number:" YELLOW " index of character" RESET_COLOUR " value)\n\n");
 
     for (unsigned int i = 0; i < * string_guard->number_of_strings; i++)
     {
@@ -227,7 +225,6 @@ int string_guard_detail (String_guard * string_guard)
 
 int string_guard_list_strings(String_guard * string_guard)
 {
-
     for (unsigned int i = 0; i < * string_guard->number_of_strings; i++)
     {
         printf("%u: %s\n", i, string_guard_get_string(string_guard, i));

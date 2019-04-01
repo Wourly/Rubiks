@@ -382,7 +382,7 @@ int turn_down_side (Cube * cube, int rotations)
 int rotate_horizontally (Cube * cube, int rotations)
 {
     toggled_name(cube, 'H', rotations);
-
+    
     char * ts = NULL;
 
     if
@@ -418,7 +418,9 @@ int rotate_vertically (Cube * cube, int rotations)
     toggled_name(cube, 'V', rotations);
 
     char t;
-    toggle_drawing(cube);
+    char is_drawing = * cube->is_drawing;
+    
+    * cube->is_drawing = 0;
 
     while (rotations--)
     {
@@ -445,7 +447,8 @@ int rotate_vertically (Cube * cube, int rotations)
         cube->s->d[7] = t;
     }
 
-    toggle_drawing(cube);
+    * cube->is_drawing = is_drawing;
+
     toggled_draw(cube);
 
     return 0;
@@ -457,7 +460,9 @@ int rotate_around (Cube * cube, int rotations)
     toggled_name(cube, 'A', rotations);
 
     char t;
-    toggle_drawing(cube);
+    char is_drawing = * cube->is_drawing;
+    
+    * cube->is_drawing = 0;
 
     while (rotations--)
     {
@@ -484,7 +489,8 @@ int rotate_around (Cube * cube, int rotations)
         cube->s->u[3] = t;
     }
 
-    toggle_drawing(cube);
+    * cube->is_drawing = is_drawing;
+
     toggled_draw(cube);
 
     return 0;   
@@ -517,7 +523,7 @@ int get_commands_from_string(String_guard * string_guard, char * string)
 
         switch (c)
         {
-            case 'q': printf("mám tě!"); goto END_OF_INPUT;
+            case 'q': printf("End of input!"); goto END_OF_INPUT;
             case '\0': goto END_OF_INPUT;
 
             case 'F': buff[0] = c; is_movement = 1; break;
@@ -614,9 +620,10 @@ int apply_commands (Cube * cube, char * string)
 
 String_guard * get_random_commands_sequence (int operations)
 {
-    char buff[3];
 
     String_guard * string_guard = new_string_guard();
+
+    char buff[3];
 
     time_t seed;
     time(&seed);
@@ -642,6 +649,7 @@ String_guard * get_random_commands_sequence (int operations)
 
     return string_guard;
 }
+
 
 //===========================================================================//
 //                                 ALGORITHMS                                //
@@ -670,6 +678,11 @@ int chc (char * s1, char * s2, char * s3, char c1, char c2, char c3)
 
 int solve_front_cross (Cube * c)
 {
+    if (c->s->f[4] == c->s->f[1] && c->s->f[4] == c->s->f[3] && c->s->f[4] == c->s->f[5] && c->s->f[4] == c->s->f[7])
+    {
+        goto SOLVE_FRONT_CROSS_SKIP;
+    }
+
 // front / up side piece
     // back
     if (chs(c->s->f, c->s->u, c->s->b[1], c->s->u[1]))
@@ -846,20 +859,30 @@ int solve_front_cross (Cube * c)
     }
 
     //checking orientation of side pieces
-
-    for (unsigned int sfci = 0; sfci < 4; sfci++)
+    if (c->s->f[4] != c->s->f[1] || c->s->f[4] != c->s->f[3] || c->s->f[4] != c->s->f[5] || c->s->f[4] != c->s->f[7])
     {
-        if (c->s->f[4] != c->s->f[7])
+        for (unsigned int sfci = 0; sfci < 4; sfci++)
         {
-            apply_commands(c, "D2 B R D' R'");
+            if (c->s->f[4] != c->s->f[7])
+            {
+                apply_commands(c, "D2 B R D' R'");
+            }
+            apply_commands(c, "A");
         }
-        rotate_around(c, 1);
     }
+    SOLVE_FRONT_CROSS_SKIP:
+
     return 0;
 }
 
 int solve_front_side (Cube * c)
 {
+
+    if (c->s->f[4] == c->s->f[0] && c->s->f[4] == c->s->f[2] && c->s->f[4] == c->s->f[6] && c->s->f[4] == c->s->f[8])
+    {
+        goto SOLVE_FRONT_SIDE_SKIP;
+    }
+
     for (int sfsi = 0; sfsi < 4; sfsi++)
     {
         if (chc(c->s->f, c->s->d, c->s->r, c->s->f[2], c->s->u[8], c->s->r[0]))
@@ -896,7 +919,7 @@ int solve_front_side (Cube * c)
         {
             apply_commands(c, "R' B R");
         }
-            rotate_around(c, 1);
+            apply_commands(c, "A");
     }
 
     for (unsigned int sfsi = 0; sfsi < 4; sfsi++)
@@ -906,15 +929,31 @@ int solve_front_side (Cube * c)
         {
             apply_commands(c, "R' B R B' R' B R");
         }
-        rotate_around(c, 1);
+        apply_commands(c, "A");
     }
+
+    SOLVE_FRONT_SIDE_SKIP:
 
     return 0;
 }
 
 int solve_second_layer (Cube * c)
 {
-    rotate_vertically(c, 1);
+    if
+    (
+        (c->s->d[4] == c->s->d[3] && c->s->d[4] == c->s->d[5])
+        &&
+        (c->s->l[4] == c->s->l[1] && c->s->l[4] == c->s->l[7])
+        &&
+        (c->s->r[4] == c->s->r[1] && c->s->r[4] == c->s->r[7])
+        &&
+        (c->s->u[4] == c->s->u[3] && c->s->u[4] == c->s->u[5])
+    )
+    {
+        goto SOLVE_SECOND_LAYER_SKIP;
+    }
+
+    apply_commands(c, "V");
 
     for (int ssli1 = 0; ssli1 < 2; ssli1++)
     {
@@ -1002,18 +1041,26 @@ int solve_second_layer (Cube * c)
             }
         }
 
-        rotate_horizontally(c, 2);
+        apply_commands(c, "H2");
     }
 
-    rotate_vertically(c, 3);
+    apply_commands(c, "V3");
+
+    SOLVE_SECOND_LAYER_SKIP:
 
     return 0;
 }
 
 int solve_back_cross (Cube * c)
 {
-    rotate_vertically(c, 2);
 
+    if (c->s->b[4] == c->s->b[1] && c->s->b[4] == c->s->b[3] && c->s->b[4] == c->s->b[5] && c->s->b[4] == c->s->b[7])
+    {
+        goto SOLVE_BACK_CROSS_SKIP;
+    }
+
+    apply_commands(c, "V2");
+    
     //correct side pieces
     int csp;
     int sbc_c;
@@ -1036,7 +1083,7 @@ SOLVE_BACK_CROSS_CHECK_SIDE:
         goto SOLVE_BACK_CROSS_END;
     }
 
-    if (csp < 4)
+    if (csp < 4 && csp != 2)
     {
         apply_commands(c, sq);
     }
@@ -1056,7 +1103,6 @@ SOLVE_BACK_CROSS_CHECK_SIDE:
 
         if (c->s->f[4] == c->s->f[1])
         {
-
             apply_commands(c, sq);
         }
 
@@ -1078,14 +1124,20 @@ SOLVE_BACK_CROSS_CHECK_SIDE:
 
     SOLVE_BACK_CROSS_END:
 
-    rotate_vertically(c, 2);
+    apply_commands(c, "V2");
+            
+    SOLVE_BACK_CROSS_SKIP:
 
     return 0;
 }
 
 int solve_last_side (Cube * c)
 {
-    rotate_horizontally(c, 2);
+    if (c->s->b[4] == c->s->b[0] && c->s->b[4] == c->s->b[2] && c->s->b[4] == c->s->b[6] && c->s->b[4] == c->s->b[8])
+    {
+        goto SOLVE_LAST_SIDE_SKIP;
+    }
+    apply_commands(c, "H2");
 
     int incorrect_corner_pieces;
     int solve_last_side_attempt = 0;
@@ -1111,7 +1163,7 @@ SOLVE_LAST_SIDE_CHECK_ORIENTATION:
     {
         while (!(c->s->l[2] == c->s->f[4] && c->s->l[8] == c->s->f[4]))
         {
-            turn_front_side(c, 1);
+            apply_commands(c, "F");
         }
     }
 
@@ -1119,7 +1171,7 @@ SOLVE_LAST_SIDE_CHECK_ORIENTATION:
     {
         while (!(c->s->f[6] == c->s->f[4]))
         {
-            turn_front_side(c, 1);
+            apply_commands(c, "F");
         }
     }
 
@@ -1127,7 +1179,7 @@ SOLVE_LAST_SIDE_CHECK_ORIENTATION:
     {
         while (!(c->s->r[0] == c->s->f[4]))
         {
-            turn_front_side(c, 1);
+            apply_commands(c, "F");
         }
     }
 
@@ -1143,9 +1195,11 @@ SOLVE_LAST_SIDE_CHECK_ORIENTATION:
 
     goto SOLVE_LAST_SIDE_CHECK_ORIENTATION;
 
-SOLVE_LAST_SIDE_END:
+    SOLVE_LAST_SIDE_END:
 
-    rotate_horizontally(c, 2);
+    apply_commands(c, "H2");
+
+    SOLVE_LAST_SIDE_SKIP:
 
     return 0;
 }
@@ -1153,7 +1207,19 @@ SOLVE_LAST_SIDE_END:
 int solve_final_layer (Cube * c)
 {
 
-    rotate_vertically(c, 2);
+    if
+    (
+        (c->s->d[4] == c->s->d[6] && c->s->l[4] == c->s->l[0] && c->s->r[4] == c->s->r[2] && c->s->u[4] == c->s->u[0])
+        &&
+        (c->s->d[4] == c->s->d[7] && c->s->l[4] == c->s->l[3] && c->s->r[4] == c->s->r[5] && c->s->u[4] == c->s->u[1])
+        &&
+        (c->s->d[4] == c->s->d[8] && c->s->l[4] == c->s->l[6] && c->s->r[4] == c->s->r[8] && c->s->u[4] == c->s->u[2])
+    )
+    {
+        goto SOLVE_FINAL_LAYER_SIDE_SKIP;
+    }
+
+    apply_commands(c, "H2");
 
     int sides_with_correct_corner = 0;
 
@@ -1189,20 +1255,20 @@ int solve_final_layer (Cube * c)
                 break;
             }
 
-            turn_front_side(c, 1);
+            apply_commands(c, "F");
         }
 
-        while (1)
+        while (1) //error - cannot break
         {
             if (c->s->u[6] == c->s->u[4] && c->s->u[8] == c->s->u[4])
             {
                 break;
             }
             
-            turn_front_side(c, 1);
+            apply_commands(c, "A");
         }
 
-        //main top layer alorithm
+        //main top layer algorithm
         if (sides_with_correct_corner < 2)
         {
             apply_commands(c, "R' D R' U2 R D' R' U2 R2 F'");
@@ -1215,10 +1281,10 @@ int solve_final_layer (Cube * c)
                 break;
             }
 
-            turn_front_side(c, 1);
+            apply_commands(c, "A");
         }
 
-        for (int i = 0; i < 2; i++)
+        for (int sfli = 0; sfli < 2; sfli++)
         {
             if (c->s->d[1] == c->s->l[4])
             {
@@ -1241,7 +1307,7 @@ int solve_final_layer (Cube * c)
                 {
                     break;
                 }
-                rotate_around(c, 1);
+                apply_commands(c, "A");
             }
         }
     }
@@ -1253,8 +1319,7 @@ int solve_final_layer (Cube * c)
             {
                 break;
             }
-
-            turn_front_side(c, 1);
+            apply_commands(c, "F");
         }
 
         while (1)
@@ -1263,13 +1328,28 @@ int solve_final_layer (Cube * c)
             {
                 break;
             }
-            turn_front_side(c, 1);
+            apply_commands(c, "A");
         }
 
         apply_commands(c, "R' D R' U2 R D' R' U2 R2 F'");
 
         goto SOLVE_FINAL_LAYER_FROM_RARE;
     }
+
+    SOLVE_FINAL_LAYER_SIDE_SKIP:
+
+    return 0;
+}
+
+int solve_all (Cube * cube)
+{
+    solve_front_cross(cube);
+    solve_front_side(cube);
+    solve_second_layer(cube);
+    solve_back_cross(cube);
+    solve_last_side(cube);
+    solve_final_layer(cube);
+
     return 0;
 }
 
@@ -1321,4 +1401,25 @@ Cube * new_cube()
 
     return destroy_cube(cube);
 };
+
+int cube_test (int test_number)
+{
+    Cube * cube = new_cube();
+    toggle_drawing(cube);
+
+    long unsigned int total_commands = 0;
+
+    for (unsigned int i = 100; i < 100 + test_number; i++)
+    {
+        String_guard * commands = get_random_commands_sequence(i);
+        total_commands += i;
+        apply_commands(cube, commands->value);
+        solve_all(cube);
+        draw_cube(cube);
+    }
+    string_guard_detail(cube->c);
+    printf("Average commands to solve cube: %lu\n", (* cube->c->number_of_strings - total_commands) / test_number);
+
+    return 0;
+}
 #endif
