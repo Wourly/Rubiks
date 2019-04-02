@@ -4,21 +4,10 @@
 
 
 int main () {
-/*
-Cube * cube = new_cube();
 
-turn_right_side(cube, 1);
-turn_front_side(cube, 1);turn_right_side(cube, 1);
-turn_back_side(cube, 1);
+  cube_console_game_help();
 
-
-solve_all(cube);
-
-string_guard_detail(cube->c);
-*/
-
-cube_test(100);
-
-
+  //cube_test(50);
+  
   return 0;
 }

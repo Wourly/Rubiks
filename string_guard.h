@@ -192,21 +192,8 @@ char * string_guard_get_string (String_guard * string_guard, int index)
     return NULL;
 }
 
-
-
-int string_guard_detail (String_guard * string_guard)
+int string_guard_print_list (String_guard * string_guard)
 {
-    string_guard_info (string_guard);
-    printf(CYAN "capacity:"         YELLOW  "\t%llu", *string_guard->capacity);
-    printf(CYAN "\tindex:"          YELLOW  "\t%llu", *string_guard->index);
-    printf(CYAN "\tcharacters:"     YELLOW  "\t%llu", *string_guard->index + 1);
-
-    printf(CYAN "\tseparator_cap:"  YELLOW  "\t%u\n", *string_guard->separators_capacity);
-
-
-
-    printf(CYAN "\nlist of separators:\t" RESET_COLOUR "(" BLUE "string number:" YELLOW " index of character" RESET_COLOUR " value)\n\n");
-
     for (unsigned int i = 0; i < * string_guard->number_of_strings; i++)
     {
         printf(BLUE "%u:" YELLOW " %u " WHITE "%s\t", i, string_guard->separators[i], string_guard_get_string(string_guard, i));
@@ -218,6 +205,22 @@ int string_guard_detail (String_guard * string_guard)
     }
 
     printf(RESET_COLOUR"\n");
+
+    return 0;
+}
+
+int string_guard_detail (String_guard * string_guard)
+{
+    string_guard_info (string_guard);
+    printf(CYAN "capacity:"         YELLOW  "\t%llu", *string_guard->capacity);
+    printf(CYAN "\tindex:"          YELLOW  "\t%llu", *string_guard->index);
+    printf(CYAN "\tcharacters:"     YELLOW  "\t%llu", *string_guard->index + 1);
+
+    printf(CYAN "\tseparator_cap:"  YELLOW  "\t%u\n", *string_guard->separators_capacity);
+
+    printf(CYAN "\nlist:\t" RESET_COLOUR "(" BLUE "string number:" YELLOW " index of character" RESET_COLOUR " value)\n\n");
+
+    string_guard_print_list(string_guard);
 
     return 1;
 }

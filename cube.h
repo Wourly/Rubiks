@@ -499,8 +499,9 @@ int rotate_around (Cube * cube, int rotations)
 //---------------------------------------------------------------------------//
 //                                   commands                                //
 //---------------------------------------------------------------------------//
-
-int get_commands_from_string(String_guard * string_guard, char * string)
+int apply_commands (Cube * cube, char * string);
+int solve_all (Cube * cube);
+int get_commands(String_guard * string_guard, char * string, Cube * cube)
 {
     //if string is NULL, reading from stdin
     unsigned int limit = 0;
@@ -510,6 +511,7 @@ int get_commands_from_string(String_guard * string_guard, char * string)
     char buff [3];
 
     int is_movement = 0;
+    //int is_solve = 0;
 
     unsigned int i = 0;
 
@@ -525,6 +527,14 @@ int get_commands_from_string(String_guard * string_guard, char * string)
         {
             case 'q': printf("End of input!"); goto END_OF_INPUT;
             case '\0': goto END_OF_INPUT;
+
+            case 'a': apply_commands(cube, string_guard->value); destroy_string_guard(string_guard); string_guard = new_string_guard(); break;
+            case 't': toggle_drawing(cube); break;
+            case 'l': string_guard_print_list(cube->c); break;
+            case 's': solve_all(cube); break;
+            case 'd': destroy_string_guard(cube->c); cube->c = new_string_guard(); printf("Command history deleted!\n"); break;
+            //case 'r': apply
+
 
             case 'F': buff[0] = c; is_movement = 1; break;
             case 'B': buff[0] = c; is_movement = 1; break;
@@ -568,6 +578,38 @@ int get_commands_from_string(String_guard * string_guard, char * string)
                 }
             }   
         }
+        //looking for number end
+/*
+        //looking to solve
+        if (is_movement)
+        {
+            c = string ? string[i++] : getc(stdin);
+
+            if (c > '0' && c <= '9')
+            {
+                buff[1] = c;
+                buff[2] = '\0';
+                string_guard_push(string_guard, buff);
+            }
+            else
+            {
+                buff[1] = c == '\'' ? '3' : '1';
+                buff[2] = '\0';
+                string_guard_push(string_guard, buff);
+                
+                is_movement = 0;
+
+                if (i >= limit)
+                {
+                    goto END_OF_INPUT;
+                }
+                else
+                {
+                    goto WAS_NOT_A_MOVEMENT_NUMBER;
+                }
+            }   
+        }
+        //looking to solve end*/
     }
 
     END_OF_INPUT:
@@ -609,7 +651,7 @@ int apply_commands (Cube * cube, char * string)
 {
     String_guard * string_guard = new_string_guard();
 
-    get_commands_from_string(string_guard, string);
+    get_commands(string_guard, string, NULL);
 
     execute_commands(string_guard, cube);
 
@@ -877,7 +919,7 @@ int solve_front_cross (Cube * c)
 
 int solve_front_side (Cube * c)
 {
-
+//does not check for other sides!!! ERROR!, the same is in back side
     if (c->s->f[4] == c->s->f[0] && c->s->f[4] == c->s->f[2] && c->s->f[4] == c->s->f[6] && c->s->f[4] == c->s->f[8])
     {
         goto SOLVE_FRONT_SIDE_SKIP;
@@ -1415,10 +1457,132 @@ int cube_test (int test_number)
         total_commands += i;
         apply_commands(cube, commands->value);
         solve_all(cube);
-        draw_cube(cube);
+        //draw_cube(cube);
     }
-    string_guard_detail(cube->c);
+    //string_guard_detail(cube->c);
+    printf("Commands: %d\n", * cube->c->number_of_strings);
     printf("Average commands to solve cube: %lu\n", (* cube->c->number_of_strings - total_commands) / test_number);
+
+    return 0;
+}
+
+int cube_console_game_help ()
+{
+
+    printf("Use following commands:\n\n");
+    printf("...for side moves\n\n" CYAN);
+    
+    printf("\t" RED_BG      "           ");
+    printf("\t" MAGENTA_BG  "           ");
+    printf("\t" YELLOW_BG   "           ");
+    printf("\t" WHITE_BG    "           ");
+    printf("\t" GREEN_BG    "           ");
+    printf("\t" BLUE_BG     "           ");
+
+    printf("\n"); 
+       
+    printf("\t" RED_BG      "           ");
+    printf("\t" MAGENTA_BG  "           ");
+    printf("\t" YELLOW_BG   "           ");
+    printf("\t" WHITE_BG    "           ");
+    printf("\t" GREEN_BG    "           ");
+    printf("\t" BLUE_BG     "           ");
+
+    printf("\n");
+
+    printf("\t" RED_BG      "    " BLACK_BG " F " RED_BG        "    ");
+    printf("\t" MAGENTA_BG  "    " BLACK_BG " B " MAGENTA_BG    "    ");
+    printf("\t" YELLOW_BG   "    " BLACK_BG " L " YELLOW_BG     "    ");
+    printf("\t" WHITE_BG    "    " BLACK_BG " R " WHITE_BG      "    ");
+    printf("\t" GREEN_BG    "    " BLACK_BG " U " GREEN_BG      "    ");
+    printf("\t" BLUE_BG     "    " BLACK_BG " D " BLUE_BG       "    ");
+
+    printf("\n");
+
+    printf("\t" RED_BG      "           ");
+    printf("\t" MAGENTA_BG  "           ");
+    printf("\t" YELLOW_BG   "           ");
+    printf("\t" WHITE_BG    "           ");
+    printf("\t" GREEN_BG    "           ");
+    printf("\t" BLUE_BG     "           ");
+
+    printf("\n"); 
+       
+    printf("\t" RED_BG      "           ");
+    printf("\t" MAGENTA_BG  "           ");
+    printf("\t" YELLOW_BG   "           ");
+    printf("\t" WHITE_BG    "           ");
+    printf("\t" GREEN_BG    "           ");
+    printf("\t" BLUE_BG     "           ");
+
+    printf(RESET_COLOUR "\n\n");
+
+    printf("...for cube rotation:\n\n\t");
+
+    printf("    "       GREEN_BG    "      " RESET_COLOUR);  
+    printf("      "     WHITE_BG    "      " RESET_COLOUR); 
+
+    printf("          "   GREEN_BG    "      " RESET_COLOUR); 
+    printf("      "     RED_BG      "      " RESET_COLOUR); 
+
+    printf("          "   RED_BG      "      " RESET_COLOUR); 
+    printf("      "     YELLOW_BG   "      " RESET_COLOUR); 
+
+    printf("\n\t");
+
+    printf(CYAN "A:  "           GREEN_BG    "      " RESET_COLOUR "  ->  " WHITE_BG     "      " RESET_COLOUR);
+    printf(CYAN "    V:    "     GREEN_BG    "      " RESET_COLOUR "  ->  " RED_BG       "      " RESET_COLOUR);
+    printf(CYAN "    H:    "     RED_BG      "      " RESET_COLOUR "  ->  " YELLOW_BG    "      " RESET_COLOUR);
+    
+    printf("\n\t");
+
+    printf("    "       GREEN_BG    "      " RESET_COLOUR);  
+    printf("      "     WHITE_BG    "      " RESET_COLOUR); 
+
+    printf("          "   GREEN_BG    "      " RESET_COLOUR); 
+    printf("      "     RED_BG      "      " RESET_COLOUR); 
+
+    printf("          "   RED_BG      "      " RESET_COLOUR); 
+    printf("      "     YELLOW_BG   "      " RESET_COLOUR); 
+    
+    printf("\n\n" RESET_COLOUR);
+
+    Cube * show_cube = new_cube();
+
+    draw_cube(show_cube);
+
+    destroy_cube(show_cube);
+
+    printf("\nExecution commands:\n\n");
+
+    printf("\t" CYAN "a" RESET_COLOUR ":\t apply commands\t");
+    printf("\t" CYAN "q" RESET_COLOUR ":\t quit game\t");
+    printf("\t" CYAN "r" RESET_COLOUR ":\t randomize cube\t");
+    printf("\t" CYAN "s" RESET_COLOUR ":\t solve cube\t");
+
+    printf("\n");
+
+    printf("\t" CYAN "l" RESET_COLOUR ":\t list history\t");
+    printf("\t" CYAN "d" RESET_COLOUR ":\t delete history\t");
+    printf("\t" CYAN "t" RESET_COLOUR ":\t toggle drawing\t");
+    printf("\t" CYAN "enter" RESET_COLOUR ":\t execute\t");
+
+    printf("\n" RESET_COLOUR);
+
+    return 0;
+}
+
+int cube_console_game ()
+{
+    Cube * cube = new_cube();
+
+    String_guard * commands = new_string_guard();
+
+    printf(GREEN "Ready to solve Rubik's cube?\n" RESET_COLOUR);
+
+    cube_console_game_help();
+
+    get_commands(commands, NULL, cube);
 
     return 0;
 }
