@@ -5,7 +5,7 @@
 
 int main () {
 
-  cube_console_game_help();
+  cube_console_game();
 
   //cube_test(50);
   
