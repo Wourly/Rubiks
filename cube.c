@@ -331,7 +331,7 @@ void rotate_horizontally (Cube * cube, int rotations)
     }
     else
     {
-        printf("Error: could not rotate horizontally! No memory");
+        printf("Error: could not rotate horizontally! No memory\n");
     }
 
     toggled_draw(cube);
@@ -416,8 +416,18 @@ void rotate_around (Cube * cube, int rotations)
 }
 
 
+void randomize_cube(Cube * cube)
+{
+    String_guard * string_guard = get_random_commands_sequence(100);
+    execute_commands(string_guard, cube);
+    destroy_string_guard(string_guard);
+}
+
 void get_commands(String_guard * string_guard, char * string, Cube * cube)
 {
+
+    //if cube is not provided, then it is 
+
     //if string is NULL, reading from stdin
     unsigned int limit = 0;
     if (string) while (string[limit++]); else limit = 1;
@@ -426,7 +436,6 @@ void get_commands(String_guard * string_guard, char * string, Cube * cube)
     char buff [3];
 
     int is_movement = 0;
-    //int is_solve = 0;
 
     unsigned int i = 0;
 
@@ -440,7 +449,7 @@ void get_commands(String_guard * string_guard, char * string, Cube * cube)
 
         switch (c)
         {
-            case 'q': printf("End of input!"); goto END_OF_INPUT;
+            case 'q': printf("End.\n"); goto END_OF_INPUT;
             case '\0': goto END_OF_INPUT;
 
             case 'a': apply_commands(cube, string_guard->value); destroy_string_guard(string_guard); string_guard = new_string_guard(); break;
@@ -448,8 +457,8 @@ void get_commands(String_guard * string_guard, char * string, Cube * cube)
             case 'l': string_guard_print_list(cube->c); break;
             case 's': solve_all(cube); break;
             case 'd': destroy_string_guard(cube->c); cube->c = new_string_guard(); printf("Command history deleted!\n"); break;
-            //case 'r': String_guard * new_commands
-
+            case 'r': randomize_cube(cube); printf("100 random commands were applied\n"); break;
+            case 'h': cube_console_game_help();
 
             case 'F': buff[0] = c; is_movement = 1; break;
             case 'B': buff[0] = c; is_movement = 1; break;
@@ -462,7 +471,6 @@ void get_commands(String_guard * string_guard, char * string, Cube * cube)
             case 'V': buff[0] = c; is_movement = 1; break;
             case 'A': buff[0] = c; is_movement = 1; break;
         }
-
 
         //looking for number
         if (is_movement)
@@ -587,9 +595,25 @@ bool chc (char * s1, char * s2, char * s3, char c1, char c2, char c3)
 
 void solve_front_cross (Cube * c)
 {
-    if (c->s->f[4] == c->s->f[1] && c->s->f[4] == c->s->f[3] && c->s->f[4] == c->s->f[5] && c->s->f[4] == c->s->f[7])
+    if
+    (
+        c->s->f[4] == c->s->f[1] && c->s->f[4] == c->s->f[3] && c->s->f[4] == c->s->f[5] && c->s->f[4] == c->s->f[7]
+        &&
+        c->s->u[4] == c->s->u[7]
+        &&
+        c->s->r[4] == c->s->r[3]
+        &&
+        c->s->d[4] == c->s->d[1]
+        &&
+        c->s->l[4] == c->s->l[5]
+    )
     {
         goto SOLVE_FRONT_CROSS_SKIP;
+    }
+
+    if (*c->is_drawing)
+    {
+        printf("\nSolving front cross\n");
     }
 
 // front / up side piece
@@ -787,9 +811,26 @@ void solve_front_cross (Cube * c)
 void solve_front_side (Cube * c)
 {
 //does not check for other sides!!! ERROR!, the same is in back side
-    if (c->s->f[4] == c->s->f[0] && c->s->f[4] == c->s->f[2] && c->s->f[4] == c->s->f[6] && c->s->f[4] == c->s->f[8])
+    if
+    (
+        c->s->f[4] == c->s->f[0] && c->s->f[4] == c->s->f[2] && c->s->f[4] == c->s->f[6] && c->s->f[4] == c->s->f[8]
+        &&
+        c->s->u[4] == c->s->u[6] && c->s->u[4] == c->s->u[8]
+        &&
+        c->s->r[4] == c->s->r[0] && c->s->r[4] == c->s->r[6]
+        &&
+        c->s->d[4] == c->s->d[0] && c->s->d[4] == c->s->d[2]
+        &&
+        c->s->l[4] == c->s->l[2] && c->s->l[4] == c->s->l[8]
+    
+    )
     {
         goto SOLVE_FRONT_SIDE_SKIP;
+    }
+
+    if (*c->is_drawing)
+    {
+        printf("\nSolving front side\n");
     }
 
     for (int sfsi = 0; sfsi < 4; sfsi++)
@@ -860,6 +901,11 @@ void solve_second_layer (Cube * c)
     )
     {
         goto SOLVE_SECOND_LAYER_SKIP;
+    }
+
+    if (*c->is_drawing)
+    {
+        printf("\nSolving second layer\n");
     }
 
     apply_commands(c, "V");
@@ -968,6 +1014,11 @@ void solve_back_cross (Cube * c)
         goto SOLVE_BACK_CROSS_SKIP;
     }
 
+    if (*c->is_drawing)
+    {
+        printf("\nSolving back cross\n");
+    }
+
     apply_commands(c, "V2");
     
     //correct side pieces
@@ -1046,6 +1097,12 @@ void solve_last_side (Cube * c)
     {
         goto SOLVE_LAST_SIDE_SKIP;
     }
+
+    if (*c->is_drawing)
+    {
+        printf("\nSolving last side\n");
+    }
+
     apply_commands(c, "H2");
 
     int incorrect_corner_pieces;
@@ -1127,6 +1184,11 @@ void solve_final_layer (Cube * c)
         goto SOLVE_FINAL_LAYER_SIDE_SKIP;
     }
 
+    if (*c->is_drawing)
+    {
+        printf("\nSolving final layer\n");
+    }
+
     apply_commands(c, "H2");
 
     int sides_with_correct_corner = 0;
@@ -1166,7 +1228,7 @@ void solve_final_layer (Cube * c)
             apply_commands(c, "F");
         }
 
-        while (1) //error - cannot break
+        while (1)
         {
             if (c->s->u[6] == c->s->u[4] && c->s->u[8] == c->s->u[4])
             {
@@ -1308,27 +1370,39 @@ Cube * new_cube()
 
 void cube_test (int test_number)
 {
+
+    time_t start_time = time(NULL);
+
     Cube * cube = new_cube();
     toggle_drawing(cube);
+    long unsigned int total_cube_commands = 0;
 
-    long unsigned int total_commands = 0;
-
-    for (unsigned int i = 100; i < 100 + test_number; i++)
+    for (unsigned int i = 0; i < test_number; i++)
     {
-        String_guard * commands = get_random_commands_sequence(i);
-        total_commands += i;
+        String_guard * commands = get_random_commands_sequence(100);
         apply_commands(cube, commands->value);
         solve_all(cube);
+        total_cube_commands += * cube->c->number_of_strings;
+        destroy_string_guard(cube->c);
+        cube->c = new_string_guard();
+
         //draw_cube(cube);
     }
+
+    time_t end_time = time(NULL);
+
     //string_guard_detail(cube->c);
-    printf("Commands in total (including random sequences): %d\n", * cube->c->number_of_strings);
-    printf("Average commands to solve cube: %lu\n", (* cube->c->number_of_strings - total_commands) / test_number);
+    printf("%d cubes were solved in %lu seconds\n", test_number, end_time - start_time);
+    printf("Total randomizing commands used: %d\n", test_number * 100);
+    printf("Commands to solve all cubes: %lu\n", total_cube_commands - test_number * 100);
+    printf("Average commands to solve cubes: %lu\n", (total_cube_commands - test_number * 100) / test_number);
+    printf("Average time to solve one cube is %f seconds.", (float)(end_time - start_time) / (float)test_number);
+
+    destroy_cube(cube);
 }
 
 void cube_console_game_help ()
 {
-
     printf("Use following commands:\n\n");
     printf("...for side moves:\n\n" CYAN);
     
@@ -1339,7 +1413,7 @@ void cube_console_game_help ()
     printf("\t" GREEN_BG    "           ");
     printf("\t" BLUE_BG     "           ");
 
-    printf("\n"); 
+    printf(RESET_COLOUR "\n");
        
     printf("\t" RED_BG      "           ");
     printf("\t" MAGENTA_BG  "           ");
@@ -1348,7 +1422,7 @@ void cube_console_game_help ()
     printf("\t" GREEN_BG    "           ");
     printf("\t" BLUE_BG     "           ");
 
-    printf("\n");
+    printf(RESET_COLOUR "\n");
 
     printf("\t" RED_BG      "    " BLACK_BG " F " RED_BG        "    ");
     printf("\t" MAGENTA_BG  "    " BLACK_BG " B " MAGENTA_BG    "    ");
@@ -1357,7 +1431,7 @@ void cube_console_game_help ()
     printf("\t" GREEN_BG    "    " BLACK_BG " U " GREEN_BG      "    ");
     printf("\t" BLUE_BG     "    " BLACK_BG " D " BLUE_BG       "    ");
 
-    printf("\n");
+    printf(RESET_COLOUR "\n");
 
     printf("\t" RED_BG      "           ");
     printf("\t" MAGENTA_BG  "           ");
@@ -1366,7 +1440,7 @@ void cube_console_game_help ()
     printf("\t" GREEN_BG    "           ");
     printf("\t" BLUE_BG     "           ");
 
-    printf("\n"); 
+    printf(RESET_COLOUR "\n");
        
     printf("\t" RED_BG      "           ");
     printf("\t" MAGENTA_BG  "           ");
@@ -1375,7 +1449,7 @@ void cube_console_game_help ()
     printf("\t" GREEN_BG    "           ");
     printf("\t" BLUE_BG     "           ");
 
-    printf(RESET_COLOUR "\n\n");
+    printf(RESET_COLOUR "\n\n...you may combine it with number (F1) or apostrophe (R')\n\n");
 
     printf("...for cube rotation:\n\n\t");
 
@@ -1415,8 +1489,16 @@ void cube_console_game_help ()
 
     printf("\nExecution commands:\n\n");
 
-    printf("\t" CYAN "a" RESET_COLOUR ":\t apply commands\t");
+    printf("\t" CYAN "h" RESET_COLOUR ":\t game help\t");
     printf("\t" CYAN "q" RESET_COLOUR ":\t quit game\t");
+
+    printf("\n");
+
+    printf("\t" CYAN "a" RESET_COLOUR ":\t apply commands\t");
+    printf("\t" CYAN "enter" RESET_COLOUR ":\t execute\t");
+
+    printf("\n");
+
     printf("\t" CYAN "r" RESET_COLOUR ":\t randomize cube\t");
     printf("\t" CYAN "s" RESET_COLOUR ":\t solve cube\t");
 
@@ -1424,10 +1506,14 @@ void cube_console_game_help ()
 
     printf("\t" CYAN "l" RESET_COLOUR ":\t list history\t");
     printf("\t" CYAN "d" RESET_COLOUR ":\t delete history\t");
+
+    printf("\n");
+
     printf("\t" CYAN "t" RESET_COLOUR ":\t toggle drawing\t");
-    printf("\t" CYAN "enter" RESET_COLOUR ":\t execute\t");
 
     printf("\n" RESET_COLOUR);
+
+    printf("\nTo get started, type: \"F1a\" and press enter\n\n");
 }
 
 void cube_console_game ()
@@ -1436,7 +1522,15 @@ void cube_console_game ()
 
     String_guard * commands = new_string_guard();
 
-    printf(GREEN "Ready to solve Rubik's cube?\n" RESET_COLOUR);
+    printf("\n\t" RESET_COLOUR);
+
+    printf(RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
+    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n\t");
+    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
+    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n\t");
+    printf(RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "      " RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
+    
+    printf("\n");
 
     cube_console_game_help();
 

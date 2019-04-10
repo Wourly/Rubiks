@@ -1,5 +1,6 @@
 #include "string_guard.h"
 
+//called from string_guard_push
 int string_guard_allocate_separators(String_guard * string_guard)
 {        
     if (*string_guard->separators_capacity <= *string_guard->number_of_strings)
@@ -44,7 +45,7 @@ int string_guard_push (String_guard * string_guard, char * input_string)
 
     unsigned int are_separators_allocated = 0;
 
-    //new chars needed
+    //new memory needed, because input string is too long to be inserted
     if (* string_guard->index + input_string_length > * string_guard->capacity)
     {
         long long unsigned int new_capacity =
@@ -77,9 +78,7 @@ int string_guard_push (String_guard * string_guard, char * input_string)
         }
         else
         {
-            STRING_GUARD_PUSH_CANNOT_ALLOCATE_MEMORY:
-            printf(YELLOW "Warning:" WHITE " Not enought memory to use " CYAN "%s" WHITE "! No string pushed!\n" RESET_COLOUR, __func__);
-            goto STRING_GUARD_PUSH_END;
+            goto STRING_GUARD_PUSH_CANNOT_ALLOCATE_MEMORY;
         }
     }
 
@@ -109,9 +108,14 @@ int string_guard_push (String_guard * string_guard, char * input_string)
 
     *string_guard->index += index_of_input_string - 1;
 
-    STRING_GUARD_PUSH_END:
+    if (0)
+    {
+        STRING_GUARD_PUSH_CANNOT_ALLOCATE_MEMORY:
+        printf(YELLOW "Warning:" WHITE " Not enought memory to use " CYAN "%s" WHITE "! No string pushed!\n" RESET_COLOUR, __func__);
+        return 1;
+    }
 
-    return 1;
+    return 0;
 };
 
 int string_guard_info (String_guard * string_guard)
@@ -124,7 +128,6 @@ int string_guard_info (String_guard * string_guard)
 
 char * string_guard_get_string (String_guard * string_guard, int index)
 {
-
     unsigned int minimum_index = 0;
     unsigned int string_length = 0;
 
@@ -198,17 +201,6 @@ int string_guard_detail (String_guard * string_guard)
     string_guard_print_list(string_guard);
 
     return 1;
-}
-
-
-int string_guard_list_strings(String_guard * string_guard)
-{
-    for (unsigned int i = 0; i < * string_guard->number_of_strings; i++)
-    {
-        printf("%u: %s\n", i, string_guard_get_string(string_guard, i));
-    }
-
-    return 0;
 }
 
 //string_guard_slice ...
