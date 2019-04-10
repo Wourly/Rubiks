@@ -1395,7 +1395,7 @@ void cube_test (int test_number)
     printf("%d cubes were solved in %lu seconds\n", test_number, end_time - start_time);
     printf("Total randomizing commands used: %d\n", test_number * 100);
     printf("Commands to solve all cubes: %lu\n", total_cube_commands - test_number * 100);
-    printf("Average commands to solve cubes: %lu\n", (total_cube_commands - test_number * 100) / test_number);
+    printf("Average commands to solve a cube: %lu\n", (total_cube_commands - test_number * 100) / test_number);
     printf("Average time to solve one cube is %f seconds.", (float)(end_time - start_time) / (float)test_number);
 
     destroy_cube(cube);
