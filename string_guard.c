@@ -21,11 +21,10 @@ int string_guard_allocate_separators(String_guard * string_guard)
             
             free(string_guard->separators);
             string_guard->separators = new_separators;
-
-            * string_guard->separators_capacity = new_separator_capacity;
+ 
+            * string_guard->separators_capacity = new_separator_capacity;     
 
             return 1;
-
         }
         else
         {
@@ -166,6 +165,8 @@ char * string_guard_get_string (String_guard * string_guard, int index)
     {
         printf(YELLOW "Warning: " RESET_COLOUR "Not enought memory for new string!");
     }
+
+    free(new_string);
 
     return NULL;
 }

@@ -531,9 +531,11 @@ void execute_commands(String_guard * string_guard, Cube * cube)
                 case 'V': rotate_vertically(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
                 case 'A': rotate_around(cube, buffer[1] - '0'); string_guard_push(cube->c, buffer); break;
             }
+
+            free(buffer);
         }
+        
     }
-    free(buffer);
 }
 
 void apply_commands (Cube * cube, char * string)
@@ -1326,9 +1328,10 @@ Cube * destroy_cube(Cube * cube)
 
     FREE_CUBE_MEMBER(side)
     FREE_CUBE_MEMBER(area)
-    FREE_CUBE_MEMBER(s)
-    FREE_CUBE_MEMBER(c)
     FREE_CUBE_MEMBER(is_drawing)
+
+    destroy_string_guard(cube->c);
+    destroy_cube_side_arrays(cube->s);
 
     free(cube);
 
@@ -1374,14 +1377,18 @@ void cube_test (int test_number)
     time_t start_time = time(NULL);
 
     Cube * cube = new_cube();
+    String_guard * commands = NULL;
     toggle_drawing(cube);
     long unsigned int total_cube_commands = 0;
 
     for (unsigned int i = 0; i < test_number; i++)
     {
-        String_guard * commands = get_random_commands_sequence(100);
+        commands = get_random_commands_sequence(100);
         apply_commands(cube, commands->value);
-        solve_all(cube);
+        destroy_string_guard(commands);
+
+        //solve_all(cube);
+
         total_cube_commands += * cube->c->number_of_strings;
         destroy_string_guard(cube->c);
         cube->c = new_string_guard();

@@ -85,6 +85,8 @@ void execute_commands(String_guard * string_guard, Cube * cube);
 void apply_commands (Cube * cube, char * string);
 
 String_guard * get_random_commands_sequence (int operations);
+
+void randomize_cube (Cube * cube);
 //===========================================================================//
 //                                 ALGORITHMS                                //
 //===========================================================================//
