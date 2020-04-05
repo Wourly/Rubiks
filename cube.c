@@ -1411,52 +1411,52 @@ void cube_console_game_help ()
     printf("Use following commands:\n\n");
     printf("...for side moves:\n\n" CYAN);
     
-    printf("\t" RED_BG      "           ");
-    printf("\t" MAGENTA_BG  "           ");
-    printf("\t" YELLOW_BG   "           ");
-    printf("\t" WHITE_BG    "           ");
-    printf("\t" GREEN_BG    "           ");
-    printf("\t" BLUE_BG     "           ");
+    printf(RESET_COLOUR "   " RED_BG      "           ");
+    printf(RESET_COLOUR "   " MAGENTA_BG  "           ");
+    printf(RESET_COLOUR "   " YELLOW_BG   "           ");
+    printf(RESET_COLOUR "   " WHITE_BG    "           ");
+    printf(RESET_COLOUR "   " GREEN_BG    "           ");
+    printf(RESET_COLOUR "   " BLUE_BG     "           ");
 
     printf(RESET_COLOUR "\n");
        
-    printf("\t" RED_BG      "           ");
-    printf("\t" MAGENTA_BG  "           ");
-    printf("\t" YELLOW_BG   "           ");
-    printf("\t" WHITE_BG    "           ");
-    printf("\t" GREEN_BG    "           ");
-    printf("\t" BLUE_BG     "           ");
+    printf(RESET_COLOUR "   " RED_BG      "           ");
+    printf(RESET_COLOUR "   " MAGENTA_BG  "           ");
+    printf(RESET_COLOUR "   " YELLOW_BG   "           ");
+    printf(RESET_COLOUR "   " WHITE_BG    "           ");
+    printf(RESET_COLOUR "   " GREEN_BG    "           ");
+    printf(RESET_COLOUR "   " BLUE_BG     "           ");
 
     printf(RESET_COLOUR "\n");
 
-    printf("\t" RED_BG      "    " BLACK_BG " F " RED_BG        "    ");
-    printf("\t" MAGENTA_BG  "    " BLACK_BG " B " MAGENTA_BG    "    ");
-    printf("\t" YELLOW_BG   "    " BLACK_BG " L " YELLOW_BG     "    ");
-    printf("\t" WHITE_BG    "    " BLACK_BG " R " WHITE_BG      "    ");
-    printf("\t" GREEN_BG    "    " BLACK_BG " U " GREEN_BG      "    ");
-    printf("\t" BLUE_BG     "    " BLACK_BG " D " BLUE_BG       "    ");
+    printf(RESET_COLOUR "   " RED_BG      "    " BLACK_BG " F " RED_BG        "    ");
+    printf(RESET_COLOUR "   " MAGENTA_BG  "    " BLACK_BG " B " MAGENTA_BG    "    ");
+    printf(RESET_COLOUR "   " YELLOW_BG   "    " BLACK_BG " L " YELLOW_BG     "    ");
+    printf(RESET_COLOUR "   " WHITE_BG    "    " BLACK_BG " R " WHITE_BG      "    ");
+    printf(RESET_COLOUR "   " GREEN_BG    "    " BLACK_BG " U " GREEN_BG      "    ");
+    printf(RESET_COLOUR "   " BLUE_BG     "    " BLACK_BG " D " BLUE_BG       "    ");
 
     printf(RESET_COLOUR "\n");
 
-    printf("\t" RED_BG      "           ");
-    printf("\t" MAGENTA_BG  "           ");
-    printf("\t" YELLOW_BG   "           ");
-    printf("\t" WHITE_BG    "           ");
-    printf("\t" GREEN_BG    "           ");
-    printf("\t" BLUE_BG     "           ");
+    printf(RESET_COLOUR "   " RED_BG      "           ");
+    printf(RESET_COLOUR "   " MAGENTA_BG  "           ");
+    printf(RESET_COLOUR "   " YELLOW_BG   "           ");
+    printf(RESET_COLOUR "   " WHITE_BG    "           ");
+    printf(RESET_COLOUR "   " GREEN_BG    "           ");
+    printf(RESET_COLOUR "   " BLUE_BG     "           ");
 
     printf(RESET_COLOUR "\n");
        
-    printf("\t" RED_BG      "           ");
-    printf("\t" MAGENTA_BG  "           ");
-    printf("\t" YELLOW_BG   "           ");
-    printf("\t" WHITE_BG    "           ");
-    printf("\t" GREEN_BG    "           ");
-    printf("\t" BLUE_BG     "           ");
+    printf(RESET_COLOUR "   " RED_BG      "           ");
+    printf(RESET_COLOUR "   " MAGENTA_BG  "           ");
+    printf(RESET_COLOUR "   " YELLOW_BG   "           ");
+    printf(RESET_COLOUR "   " WHITE_BG    "           ");
+    printf(RESET_COLOUR "   " GREEN_BG    "           ");
+    printf(RESET_COLOUR "   " BLUE_BG     "           ");
 
     printf(RESET_COLOUR "\n\n...you may combine it with number (F1) or apostrophe (R')\n\n");
 
-    printf("...for cube rotation:\n\n\t");
+    printf("...for cube rotation:\n\n   ");
 
     printf("    "       GREEN_BG    "      " RESET_COLOUR);  
     printf("      "     WHITE_BG    "      " RESET_COLOUR); 
@@ -1467,13 +1467,13 @@ void cube_console_game_help ()
     printf("          "   RED_BG      "      " RESET_COLOUR); 
     printf("      "     YELLOW_BG   "      " RESET_COLOUR);
 
-    printf("\n\t");
+    printf("\n   ");
 
     printf(CYAN "A:  "           GREEN_BG    "      " RESET_COLOUR "  ->  " WHITE_BG     "      " RESET_COLOUR);
     printf(CYAN "    V:    "     GREEN_BG    "      " RESET_COLOUR "  ->  " RED_BG       "      " RESET_COLOUR);
     printf(CYAN "    H:    "     RED_BG      "      " RESET_COLOUR "  ->  " YELLOW_BG    "      " RESET_COLOUR);
     
-    printf("\n\t");
+    printf("\n   ");
 
     printf("    "       GREEN_BG    "      " RESET_COLOUR);  
     printf("      "     WHITE_BG    "      " RESET_COLOUR); 
@@ -1494,27 +1494,27 @@ void cube_console_game_help ()
 
     printf("\nExecution commands:\n\n");
 
-    printf("\t" CYAN "h" RESET_COLOUR ":\t game help\t");
-    printf("\t" CYAN "q" RESET_COLOUR ":\t quit game\t");
+    printf("   " CYAN "h" RESET_COLOUR ":    game help   ");
+    printf("   " CYAN "q" RESET_COLOUR ":    quit game   ");
 
     printf("\n");
 
-    printf("\t" CYAN "a" RESET_COLOUR ":\t apply commands\t");
-    printf("\t" CYAN "enter" RESET_COLOUR ":\t execute\t");
+    printf("   " CYAN "a" RESET_COLOUR ":    apply commands   ");
+    printf("   " CYAN "enter" RESET_COLOUR ":    execute   ");
 
     printf("\n");
 
-    printf("\t" CYAN "r" RESET_COLOUR ":\t randomize cube\t");
-    printf("\t" CYAN "s" RESET_COLOUR ":\t solve cube\t");
+    printf("   " CYAN "r" RESET_COLOUR ":    randomize cube   ");
+    printf("   " CYAN "s" RESET_COLOUR ":    solve cube   ");
 
     printf("\n");
 
-    printf("\t" CYAN "l" RESET_COLOUR ":\t list history\t");
-    printf("\t" CYAN "d" RESET_COLOUR ":\t delete history\t");
+    printf("   " CYAN "l" RESET_COLOUR ":    list history   ");
+    printf("   " CYAN "d" RESET_COLOUR ":    delete history   ");
 
     printf("\n");
 
-    printf("\t" CYAN "t" RESET_COLOUR ":\t toggle drawing\t");
+    printf("   " CYAN "t" RESET_COLOUR ":    toggle drawing   ");
 
     printf("\n" RESET_COLOUR);
 
@@ -1527,13 +1527,13 @@ void cube_console_game ()
 
     String_guard * commands = new_string_guard();
 
-    //printf("\n\t" RESET_COLOUR);
+    printf("\n" RESET_COLOUR);
 
-    printf(RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
-    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n\t");
-    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
-    printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n\t");
-    printf(RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "      " RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
+    printf("   " RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n");
+    printf("   " RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n");
+    printf("   " RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n");
+    printf("   " RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n");
+    printf("   " RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "      " RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n");
     
     printf("\n");
 
