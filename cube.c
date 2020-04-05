@@ -597,6 +597,8 @@ bool chc (char * s1, char * s2, char * s3, char c1, char c2, char c3)
 
 void solve_front_cross (Cube * c)
 {
+
+
     if
     (
         c->s->f[4] == c->s->f[1] && c->s->f[4] == c->s->f[3] && c->s->f[4] == c->s->f[5] && c->s->f[4] == c->s->f[7]
@@ -613,10 +615,6 @@ void solve_front_cross (Cube * c)
         goto SOLVE_FRONT_CROSS_SKIP;
     }
 
-    if (*c->is_drawing)
-    {
-        printf("\nSolving front cross\n");
-    }
 
 // front / up side piece
     // back
@@ -1529,7 +1527,7 @@ void cube_console_game ()
 
     String_guard * commands = new_string_guard();
 
-    printf("\n\t" RESET_COLOUR);
+    //printf("\n\t" RESET_COLOUR);
 
     printf(RED_BG "      "  RESET_COLOUR "  "       GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "      "  RESET_COLOUR "  " MAGENTA_BG "      " RESET_COLOUR "\n\t");
     printf(RED_BG "  "      RESET_COLOUR "      "   GREEN_BG "  " RESET_COLOUR "  "  GREEN_BG "  "  RESET_COLOUR "  " CYAN_BG "  "      RESET_COLOUR "  " CYAN_BG       "  "      RESET_COLOUR "  " MAGENTA_BG "  " RESET_COLOUR "\n\t");

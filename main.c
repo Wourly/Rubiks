@@ -2,15 +2,15 @@
 
 int main () {
 
-  //cube_console_game();
+  cube_console_game();
 
   //cube_test(50000);
 
-Cube * c = new_cube();
+//Cube * c = new_cube();
 
-toggle_drawing(c);
+//toggle_drawing(c);
 
-
+/*
 for (int i = 0; i < 100000; i++)
 {
     String_guard * string_guard = get_random_commands_sequence(100);
@@ -24,6 +24,6 @@ for (int i = 0; i < 100000; i++)
 destroy_cube(c);
 
   getc(stdin);
-
+*/
   return 0;
 }
